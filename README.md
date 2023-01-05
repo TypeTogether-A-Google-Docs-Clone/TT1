@@ -23,6 +23,9 @@ TypeTogether is a powerful and feature-rich web application, a scalable tool for
 [Taylor Corbin
 ](https://github.com/tmcorbin96)
 
+### Storage
+All documents are stored via cloud(AWS). 
+
 ## UML(JDL)
 ![jhipster-jdl-3](https://user-images.githubusercontent.com/115915843/210654525-829b4855-d18c-4fba-a5af-8b016f1001d1.png)
 
