@@ -14,6 +14,6 @@ TypeTogether is a powerful and feature-rich web application, a scalable tool for
 
 
 ## UI
+![Untitled_Artwork 2](https://user-images.githubusercontent.com/115915843/210868512-80a3d51a-9fca-412d-94be-44cd1b1f34a4.png)
 
-![Untitled_Artwork2](https://user-images.githubusercontent.com/115915843/210654466-8b442f6a-2739-40ad-8c5b-a8ab85e4c70a.png)
-![Untitled_Artwork](https://user-images.githubusercontent.com/115915843/210654485-c973696b-b04c-417c-9f9e-11c9b7fdbd5e.png)
+
