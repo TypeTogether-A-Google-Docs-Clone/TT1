@@ -10,9 +10,10 @@ Database: MySQ
 TypeTogether is a powerful and feature-rich web application, a scalable tool for teams and individuals looking to collaborate on documents.33 
 
 ## Contributors
-(https://github.com/deepthireddyg)
+[Deepthi Ganji
+](https://github.com/deepthireddyg)## UML (JDL) 
 
-## UML (JDL) 
+## UML(JDL)
 ![jhipster-jdl-3](https://user-images.githubusercontent.com/115915843/210654525-829b4855-d18c-4fba-a5af-8b016f1001d1.png)
 
 
