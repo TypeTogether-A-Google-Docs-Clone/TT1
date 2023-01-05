@@ -26,6 +26,9 @@ TypeTogether is a powerful and feature-rich web application, a scalable tool for
 ### Storage
 All documents are stored via cloud(AWS). 
 
+### Who can use it?
+This will be a multi-user/single user dument creator.
+
 ## UML(JDL)
 ![jhipster-jdl-3](https://user-images.githubusercontent.com/115915843/210654525-829b4855-d18c-4fba-a5af-8b016f1001d1.png)
 
