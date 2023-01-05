@@ -11,7 +11,13 @@ TypeTogether is a powerful and feature-rich web application, a scalable tool for
 
 ## Contributors
 [Deepthi Ganji
-](https://github.com/deepthireddyg)## UML (JDL) 
+](https://github.com/deepthireddyg)
+[Hanquan Liu
+](https://github.com/HanquanL)
+[Kash Elcock
+](https://github.com/KashElcock)
+[Taylor Corbin
+](https://github.com/tmcorbin96)
 
 ## UML(JDL)
 ![jhipster-jdl-3](https://user-images.githubusercontent.com/115915843/210654525-829b4855-d18c-4fba-a5af-8b016f1001d1.png)
