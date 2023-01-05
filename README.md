@@ -25,7 +25,9 @@ TypeTogether is a powerful and feature-rich web application, a scalable tool for
 
 ### Features
 Create (multiple font styles and character mods)
+
 Modify (online multi user input and offline single user input)
+
 Share
 
 ### Storage
