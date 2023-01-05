@@ -23,6 +23,11 @@ TypeTogether is a powerful and feature-rich web application, a scalable tool for
 [Taylor Corbin
 ](https://github.com/tmcorbin96)
 
+### Features
+Create (multiple font styles and character mods)
+Modify (online multi user input and offline single user input)
+Share
+
 ### Storage
 All documents are stored via cloud(AWS). 
 
