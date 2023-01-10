@@ -1,0 +1,9 @@
+2023-01-08 19:11:14 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "DATABASECHANGELOGLOCK" not found (this database is empty); SQL statement:
+SELECT COUNT(*) FROM PUBLIC.DATABASECHANGELOGLOCK [42104-214]
+2023-01-08 19:14:13 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]OWNER_ID NAME"; SQL statement:
+OWNER_ID NAME [42000-214]
+2023-01-08 19:14:17 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]OWNER_ID NAME"; SQL statement:
+OWNER_ID NAME [42000-214]
