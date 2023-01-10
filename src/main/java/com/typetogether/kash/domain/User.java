@@ -90,7 +90,11 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     )
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @BatchSize(size = 20)
-    private Set<Authority> authorities = new HashSet<>();
+    private Set<Authority> authorities = new java.util.LinkedHashSet<>();
+
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
+    }
 
     public Long getId() {
         return id;
@@ -191,10 +195,6 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
 
     public Set<Authority> getAuthorities() {
         return authorities;
-    }
-
-    public void setAuthorities(Set<Authority> authorities) {
-        this.authorities = authorities;
     }
 
     @Override
