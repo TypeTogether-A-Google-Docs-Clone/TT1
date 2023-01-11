@@ -154,6 +154,10 @@ export const Home = () => {
           <FontAwesomeIcon icon="plus" />
           &nbsp; Create a new Document
         </Link>
+        <Link to="/document/user" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp; View Your Documents
+        </Link>
       </div>
       <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}>
         <ValidatedField

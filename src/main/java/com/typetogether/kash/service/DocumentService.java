@@ -90,6 +90,16 @@ public class DocumentService {
         return documentRepository.findAll().stream().map(documentMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }
 
+    @Transactional(readOnly = true)
+    public List<DocumentDTO> findAllUser() {
+        log.debug("Request to get all Documents by User");
+        return documentRepository
+            .findByUserIsCurrentUser()
+            .stream()
+            .map(documentMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
     /**
      * Get all the documents with eager load of many-to-many relationships.
      *

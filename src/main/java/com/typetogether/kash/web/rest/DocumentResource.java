@@ -144,6 +144,12 @@ public class DocumentResource {
         return documentService.findAll();
     }
 
+    @GetMapping("/documentsuser")
+    public List<DocumentDTO> getAllDocumentsUser(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
+        log.debug("REST request to get all Documents");
+        return documentService.findAllUser();
+    }
+
     /**
      * {@code GET  /documents/:id} : get the "id" document.
      *
