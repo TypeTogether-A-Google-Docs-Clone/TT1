@@ -37,7 +37,7 @@ export const RegisterPage = () => {
       <Row className="justify-content-center">
         <Col md="8">
           <h1 id="register-title" data-cy="registerTitle">
-            Registration
+            Register New User
           </h1>
         </Col>
       </Row>
