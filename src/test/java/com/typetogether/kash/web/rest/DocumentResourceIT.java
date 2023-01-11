@@ -33,7 +33,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
 
 /**
  * Integration tests for the {@link DocumentResource} REST controller.
@@ -44,28 +43,17 @@ import org.springframework.util.Base64Utils;
 @WithMockUser
 class DocumentResourceIT {
 
-    private static final String DEFAULT_COLLABORATOR_LIST = "AAAAAAAAAA";
-    private static final String UPDATED_COLLABORATOR_LIST = "BBBBBBBBBB";
-
-    private static final String DEFAULT_VIEWER_LIST = "AAAAAAAAAA";
-    private static final String UPDATED_VIEWER_LIST = "BBBBBBBBBB";
-
     private static final String DEFAULT_DOCUMENT_TITLE = "AAAAAAAAAA";
     private static final String UPDATED_DOCUMENT_TITLE = "BBBBBBBBBB";
 
-    private static final byte[] DEFAULT_DOCUMENT_CONTENT = TestUtil.createByteArray(1, "0");
-    private static final byte[] UPDATED_DOCUMENT_CONTENT = TestUtil.createByteArray(1, "1");
-    private static final String DEFAULT_DOCUMENT_CONTENT_CONTENT_TYPE = "image/jpg";
-    private static final String UPDATED_DOCUMENT_CONTENT_CONTENT_TYPE = "image/png";
+    private static final String DEFAULT_DOCUMENT_CONTENT = "AAAAAAAAAA";
+    private static final String UPDATED_DOCUMENT_CONTENT = "BBBBBBBBBB";
 
     private static final Instant DEFAULT_CREATED_DATE = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_CREATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final Instant DEFAULT_MODIFIED_DATE = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_MODIFIED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
-
-    private static final String DEFAULT_LOCATION_OF_THE_DOCUMENT = "AAAAAAAAAA";
-    private static final String UPDATED_LOCATION_OF_THE_DOCUMENT = "BBBBBBBBBB";
 
     private static final String ENTITY_API_URL = "/api/documents";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -101,14 +89,10 @@ class DocumentResourceIT {
      */
     public static Document createEntity(EntityManager em) {
         Document document = new Document()
-            .collaboratorList(DEFAULT_COLLABORATOR_LIST)
-            .viewerList(DEFAULT_VIEWER_LIST)
             .documentTitle(DEFAULT_DOCUMENT_TITLE)
             .documentContent(DEFAULT_DOCUMENT_CONTENT)
-            .documentContentContentType(DEFAULT_DOCUMENT_CONTENT_CONTENT_TYPE)
             .createdDate(DEFAULT_CREATED_DATE)
-            .modifiedDate(DEFAULT_MODIFIED_DATE)
-            .locationOfTheDocument(DEFAULT_LOCATION_OF_THE_DOCUMENT);
+            .modifiedDate(DEFAULT_MODIFIED_DATE);
         return document;
     }
 
@@ -120,14 +104,10 @@ class DocumentResourceIT {
      */
     public static Document createUpdatedEntity(EntityManager em) {
         Document document = new Document()
-            .collaboratorList(UPDATED_COLLABORATOR_LIST)
-            .viewerList(UPDATED_VIEWER_LIST)
             .documentTitle(UPDATED_DOCUMENT_TITLE)
             .documentContent(UPDATED_DOCUMENT_CONTENT)
-            .documentContentContentType(UPDATED_DOCUMENT_CONTENT_CONTENT_TYPE)
             .createdDate(UPDATED_CREATED_DATE)
-            .modifiedDate(UPDATED_MODIFIED_DATE)
-            .locationOfTheDocument(UPDATED_LOCATION_OF_THE_DOCUMENT);
+            .modifiedDate(UPDATED_MODIFIED_DATE);
         return document;
     }
 
@@ -150,14 +130,10 @@ class DocumentResourceIT {
         List<Document> documentList = documentRepository.findAll();
         assertThat(documentList).hasSize(databaseSizeBeforeCreate + 1);
         Document testDocument = documentList.get(documentList.size() - 1);
-        assertThat(testDocument.getCollaboratorList()).isEqualTo(DEFAULT_COLLABORATOR_LIST);
-        assertThat(testDocument.getViewerList()).isEqualTo(DEFAULT_VIEWER_LIST);
         assertThat(testDocument.getDocumentTitle()).isEqualTo(DEFAULT_DOCUMENT_TITLE);
         assertThat(testDocument.getDocumentContent()).isEqualTo(DEFAULT_DOCUMENT_CONTENT);
-        assertThat(testDocument.getDocumentContentContentType()).isEqualTo(DEFAULT_DOCUMENT_CONTENT_CONTENT_TYPE);
         assertThat(testDocument.getCreatedDate()).isEqualTo(DEFAULT_CREATED_DATE);
         assertThat(testDocument.getModifiedDate()).isEqualTo(DEFAULT_MODIFIED_DATE);
-        assertThat(testDocument.getLocationOfTheDocument()).isEqualTo(DEFAULT_LOCATION_OF_THE_DOCUMENT);
     }
 
     @Test
@@ -181,6 +157,24 @@ class DocumentResourceIT {
 
     @Test
     @Transactional
+    void checkDocumentTitleIsRequired() throws Exception {
+        int databaseSizeBeforeTest = documentRepository.findAll().size();
+        // set the field null
+        document.setDocumentTitle(null);
+
+        // Create the Document, which fails.
+        DocumentDTO documentDTO = documentMapper.toDto(document);
+
+        restDocumentMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(documentDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Document> documentList = documentRepository.findAll();
+        assertThat(documentList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void getAllDocuments() throws Exception {
         // Initialize the database
         documentRepository.saveAndFlush(document);
@@ -191,14 +185,10 @@ class DocumentResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(document.getId().intValue())))
-            .andExpect(jsonPath("$.[*].collaboratorList").value(hasItem(DEFAULT_COLLABORATOR_LIST)))
-            .andExpect(jsonPath("$.[*].viewerList").value(hasItem(DEFAULT_VIEWER_LIST)))
             .andExpect(jsonPath("$.[*].documentTitle").value(hasItem(DEFAULT_DOCUMENT_TITLE)))
-            .andExpect(jsonPath("$.[*].documentContentContentType").value(hasItem(DEFAULT_DOCUMENT_CONTENT_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].documentContent").value(hasItem(Base64Utils.encodeToString(DEFAULT_DOCUMENT_CONTENT))))
+            .andExpect(jsonPath("$.[*].documentContent").value(hasItem(DEFAULT_DOCUMENT_CONTENT)))
             .andExpect(jsonPath("$.[*].createdDate").value(hasItem(DEFAULT_CREATED_DATE.toString())))
-            .andExpect(jsonPath("$.[*].modifiedDate").value(hasItem(DEFAULT_MODIFIED_DATE.toString())))
-            .andExpect(jsonPath("$.[*].locationOfTheDocument").value(hasItem(DEFAULT_LOCATION_OF_THE_DOCUMENT)));
+            .andExpect(jsonPath("$.[*].modifiedDate").value(hasItem(DEFAULT_MODIFIED_DATE.toString())));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -230,14 +220,10 @@ class DocumentResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(document.getId().intValue()))
-            .andExpect(jsonPath("$.collaboratorList").value(DEFAULT_COLLABORATOR_LIST))
-            .andExpect(jsonPath("$.viewerList").value(DEFAULT_VIEWER_LIST))
             .andExpect(jsonPath("$.documentTitle").value(DEFAULT_DOCUMENT_TITLE))
-            .andExpect(jsonPath("$.documentContentContentType").value(DEFAULT_DOCUMENT_CONTENT_CONTENT_TYPE))
-            .andExpect(jsonPath("$.documentContent").value(Base64Utils.encodeToString(DEFAULT_DOCUMENT_CONTENT)))
+            .andExpect(jsonPath("$.documentContent").value(DEFAULT_DOCUMENT_CONTENT))
             .andExpect(jsonPath("$.createdDate").value(DEFAULT_CREATED_DATE.toString()))
-            .andExpect(jsonPath("$.modifiedDate").value(DEFAULT_MODIFIED_DATE.toString()))
-            .andExpect(jsonPath("$.locationOfTheDocument").value(DEFAULT_LOCATION_OF_THE_DOCUMENT));
+            .andExpect(jsonPath("$.modifiedDate").value(DEFAULT_MODIFIED_DATE.toString()));
     }
 
     @Test
@@ -260,14 +246,10 @@ class DocumentResourceIT {
         // Disconnect from session so that the updates on updatedDocument are not directly saved in db
         em.detach(updatedDocument);
         updatedDocument
-            .collaboratorList(UPDATED_COLLABORATOR_LIST)
-            .viewerList(UPDATED_VIEWER_LIST)
             .documentTitle(UPDATED_DOCUMENT_TITLE)
             .documentContent(UPDATED_DOCUMENT_CONTENT)
-            .documentContentContentType(UPDATED_DOCUMENT_CONTENT_CONTENT_TYPE)
             .createdDate(UPDATED_CREATED_DATE)
-            .modifiedDate(UPDATED_MODIFIED_DATE)
-            .locationOfTheDocument(UPDATED_LOCATION_OF_THE_DOCUMENT);
+            .modifiedDate(UPDATED_MODIFIED_DATE);
         DocumentDTO documentDTO = documentMapper.toDto(updatedDocument);
 
         restDocumentMockMvc
@@ -282,14 +264,10 @@ class DocumentResourceIT {
         List<Document> documentList = documentRepository.findAll();
         assertThat(documentList).hasSize(databaseSizeBeforeUpdate);
         Document testDocument = documentList.get(documentList.size() - 1);
-        assertThat(testDocument.getCollaboratorList()).isEqualTo(UPDATED_COLLABORATOR_LIST);
-        assertThat(testDocument.getViewerList()).isEqualTo(UPDATED_VIEWER_LIST);
         assertThat(testDocument.getDocumentTitle()).isEqualTo(UPDATED_DOCUMENT_TITLE);
         assertThat(testDocument.getDocumentContent()).isEqualTo(UPDATED_DOCUMENT_CONTENT);
-        assertThat(testDocument.getDocumentContentContentType()).isEqualTo(UPDATED_DOCUMENT_CONTENT_CONTENT_TYPE);
         assertThat(testDocument.getCreatedDate()).isEqualTo(UPDATED_CREATED_DATE);
         assertThat(testDocument.getModifiedDate()).isEqualTo(UPDATED_MODIFIED_DATE);
-        assertThat(testDocument.getLocationOfTheDocument()).isEqualTo(UPDATED_LOCATION_OF_THE_DOCUMENT);
     }
 
     @Test
@@ -369,7 +347,7 @@ class DocumentResourceIT {
         Document partialUpdatedDocument = new Document();
         partialUpdatedDocument.setId(document.getId());
 
-        partialUpdatedDocument.collaboratorList(UPDATED_COLLABORATOR_LIST).viewerList(UPDATED_VIEWER_LIST);
+        partialUpdatedDocument.documentTitle(UPDATED_DOCUMENT_TITLE).documentContent(UPDATED_DOCUMENT_CONTENT);
 
         restDocumentMockMvc
             .perform(
@@ -383,14 +361,10 @@ class DocumentResourceIT {
         List<Document> documentList = documentRepository.findAll();
         assertThat(documentList).hasSize(databaseSizeBeforeUpdate);
         Document testDocument = documentList.get(documentList.size() - 1);
-        assertThat(testDocument.getCollaboratorList()).isEqualTo(UPDATED_COLLABORATOR_LIST);
-        assertThat(testDocument.getViewerList()).isEqualTo(UPDATED_VIEWER_LIST);
-        assertThat(testDocument.getDocumentTitle()).isEqualTo(DEFAULT_DOCUMENT_TITLE);
-        assertThat(testDocument.getDocumentContent()).isEqualTo(DEFAULT_DOCUMENT_CONTENT);
-        assertThat(testDocument.getDocumentContentContentType()).isEqualTo(DEFAULT_DOCUMENT_CONTENT_CONTENT_TYPE);
+        assertThat(testDocument.getDocumentTitle()).isEqualTo(UPDATED_DOCUMENT_TITLE);
+        assertThat(testDocument.getDocumentContent()).isEqualTo(UPDATED_DOCUMENT_CONTENT);
         assertThat(testDocument.getCreatedDate()).isEqualTo(DEFAULT_CREATED_DATE);
         assertThat(testDocument.getModifiedDate()).isEqualTo(DEFAULT_MODIFIED_DATE);
-        assertThat(testDocument.getLocationOfTheDocument()).isEqualTo(DEFAULT_LOCATION_OF_THE_DOCUMENT);
     }
 
     @Test
@@ -406,14 +380,10 @@ class DocumentResourceIT {
         partialUpdatedDocument.setId(document.getId());
 
         partialUpdatedDocument
-            .collaboratorList(UPDATED_COLLABORATOR_LIST)
-            .viewerList(UPDATED_VIEWER_LIST)
             .documentTitle(UPDATED_DOCUMENT_TITLE)
             .documentContent(UPDATED_DOCUMENT_CONTENT)
-            .documentContentContentType(UPDATED_DOCUMENT_CONTENT_CONTENT_TYPE)
             .createdDate(UPDATED_CREATED_DATE)
-            .modifiedDate(UPDATED_MODIFIED_DATE)
-            .locationOfTheDocument(UPDATED_LOCATION_OF_THE_DOCUMENT);
+            .modifiedDate(UPDATED_MODIFIED_DATE);
 
         restDocumentMockMvc
             .perform(
@@ -427,14 +397,10 @@ class DocumentResourceIT {
         List<Document> documentList = documentRepository.findAll();
         assertThat(documentList).hasSize(databaseSizeBeforeUpdate);
         Document testDocument = documentList.get(documentList.size() - 1);
-        assertThat(testDocument.getCollaboratorList()).isEqualTo(UPDATED_COLLABORATOR_LIST);
-        assertThat(testDocument.getViewerList()).isEqualTo(UPDATED_VIEWER_LIST);
         assertThat(testDocument.getDocumentTitle()).isEqualTo(UPDATED_DOCUMENT_TITLE);
         assertThat(testDocument.getDocumentContent()).isEqualTo(UPDATED_DOCUMENT_CONTENT);
-        assertThat(testDocument.getDocumentContentContentType()).isEqualTo(UPDATED_DOCUMENT_CONTENT_CONTENT_TYPE);
         assertThat(testDocument.getCreatedDate()).isEqualTo(UPDATED_CREATED_DATE);
         assertThat(testDocument.getModifiedDate()).isEqualTo(UPDATED_MODIFIED_DATE);
-        assertThat(testDocument.getLocationOfTheDocument()).isEqualTo(UPDATED_LOCATION_OF_THE_DOCUMENT);
     }
 
     @Test

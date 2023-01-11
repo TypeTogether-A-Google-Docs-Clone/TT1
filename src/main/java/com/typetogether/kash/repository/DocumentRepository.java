@@ -14,8 +14,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface DocumentRepository extends JpaRepository<Document, Long> {
-    @Query("select document from Document document where document.owner.login = ?#{principal.username}")
-    List<Document> findByOwnerIsCurrentUser();
+    @Query("select document from Document document where document.user.login = ?#{principal.username}")
+    List<Document> findByUserIsCurrentUser();
 
     default Optional<Document> findOneWithEagerRelationships(Long id) {
         return this.findOneWithToOneRelationships(id);
@@ -30,14 +30,14 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
     }
 
     @Query(
-        value = "select distinct document from Document document left join fetch document.owner",
+        value = "select distinct document from Document document left join fetch document.user",
         countQuery = "select count(distinct document) from Document document"
     )
     Page<Document> findAllWithToOneRelationships(Pageable pageable);
 
-    @Query("select distinct document from Document document left join fetch document.owner")
+    @Query("select distinct document from Document document left join fetch document.user")
     List<Document> findAllWithToOneRelationships();
 
-    @Query("select document from Document document left join fetch document.owner where document.id =:id")
+    @Query("select document from Document document left join fetch document.user where document.id =:id")
     Optional<Document> findOneWithToOneRelationships(@Param("id") Long id);
 }

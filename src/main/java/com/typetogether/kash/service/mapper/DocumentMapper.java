@@ -11,7 +11,7 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface DocumentMapper extends EntityMapper<DocumentDTO, Document> {
-    @Mapping(target = "owner", source = "owner", qualifiedByName = "userLogin")
+    @Mapping(target = "user", source = "user", qualifiedByName = "userLogin")
     DocumentDTO toDto(Document s);
 
     @Named("userLogin")

@@ -9,6 +9,8 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,7 +50,7 @@ public class DocumentResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/documents")
-    public ResponseEntity<DocumentDTO> createDocument(@RequestBody DocumentDTO documentDTO) throws URISyntaxException {
+    public ResponseEntity<DocumentDTO> createDocument(@Valid @RequestBody DocumentDTO documentDTO) throws URISyntaxException {
         log.debug("REST request to save Document : {}", documentDTO);
         if (documentDTO.getId() != null) {
             throw new BadRequestAlertException("A new document cannot already have an ID", ENTITY_NAME, "idexists");
@@ -73,7 +75,7 @@ public class DocumentResource {
     @PutMapping("/documents/{id}")
     public ResponseEntity<DocumentDTO> updateDocument(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody DocumentDTO documentDTO
+        @Valid @RequestBody DocumentDTO documentDTO
     ) throws URISyntaxException {
         log.debug("REST request to update Document : {}, {}", id, documentDTO);
         if (documentDTO.getId() == null) {
@@ -108,7 +110,7 @@ public class DocumentResource {
     @PatchMapping(value = "/documents/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<DocumentDTO> partialUpdateDocument(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody DocumentDTO documentDTO
+        @NotNull @RequestBody DocumentDTO documentDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update Document partially : {}, {}", id, documentDTO);
         if (documentDTO.getId() == null) {

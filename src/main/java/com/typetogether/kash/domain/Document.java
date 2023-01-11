@@ -3,6 +3,7 @@ package com.typetogether.kash.domain;
 import java.io.Serializable;
 import java.time.Instant;
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -22,21 +23,12 @@ public class Document implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "collaborator_list")
-    private String collaboratorList;
-
-    @Column(name = "viewer_list")
-    private String viewerList;
-
-    @Column(name = "document_title")
+    @NotNull
+    @Column(name = "document_title", nullable = false)
     private String documentTitle;
 
-    @Lob
     @Column(name = "document_content")
-    private byte[] documentContent;
-
-    @Column(name = "document_content_content_type")
-    private String documentContentContentType;
+    private String documentContent;
 
     @Column(name = "created_date")
     private Instant createdDate;
@@ -44,11 +36,8 @@ public class Document implements Serializable {
     @Column(name = "modified_date")
     private Instant modifiedDate;
 
-    @Column(name = "location_of_the_document")
-    private String locationOfTheDocument;
-
     @ManyToOne
-    private User owner;
+    private User user;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -65,32 +54,6 @@ public class Document implements Serializable {
         this.id = id;
     }
 
-    public String getCollaboratorList() {
-        return this.collaboratorList;
-    }
-
-    public Document collaboratorList(String collaboratorList) {
-        this.setCollaboratorList(collaboratorList);
-        return this;
-    }
-
-    public void setCollaboratorList(String collaboratorList) {
-        this.collaboratorList = collaboratorList;
-    }
-
-    public String getViewerList() {
-        return this.viewerList;
-    }
-
-    public Document viewerList(String viewerList) {
-        this.setViewerList(viewerList);
-        return this;
-    }
-
-    public void setViewerList(String viewerList) {
-        this.viewerList = viewerList;
-    }
-
     public String getDocumentTitle() {
         return this.documentTitle;
     }
@@ -104,30 +67,17 @@ public class Document implements Serializable {
         this.documentTitle = documentTitle;
     }
 
-    public byte[] getDocumentContent() {
+    public String getDocumentContent() {
         return this.documentContent;
     }
 
-    public Document documentContent(byte[] documentContent) {
+    public Document documentContent(String documentContent) {
         this.setDocumentContent(documentContent);
         return this;
     }
 
-    public void setDocumentContent(byte[] documentContent) {
+    public void setDocumentContent(String documentContent) {
         this.documentContent = documentContent;
-    }
-
-    public String getDocumentContentContentType() {
-        return this.documentContentContentType;
-    }
-
-    public Document documentContentContentType(String documentContentContentType) {
-        this.documentContentContentType = documentContentContentType;
-        return this;
-    }
-
-    public void setDocumentContentContentType(String documentContentContentType) {
-        this.documentContentContentType = documentContentContentType;
     }
 
     public Instant getCreatedDate() {
@@ -156,29 +106,16 @@ public class Document implements Serializable {
         this.modifiedDate = modifiedDate;
     }
 
-    public String getLocationOfTheDocument() {
-        return this.locationOfTheDocument;
+    public User getUser() {
+        return this.user;
     }
 
-    public Document locationOfTheDocument(String locationOfTheDocument) {
-        this.setLocationOfTheDocument(locationOfTheDocument);
-        return this;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public void setLocationOfTheDocument(String locationOfTheDocument) {
-        this.locationOfTheDocument = locationOfTheDocument;
-    }
-
-    public User getOwner() {
-        return this.owner;
-    }
-
-    public void setOwner(User user) {
-        this.owner = user;
-    }
-
-    public Document owner(User user) {
-        this.setOwner(user);
+    public Document user(User user) {
+        this.setUser(user);
         return this;
     }
 
@@ -206,14 +143,10 @@ public class Document implements Serializable {
     public String toString() {
         return "Document{" +
             "id=" + getId() +
-            ", collaboratorList='" + getCollaboratorList() + "'" +
-            ", viewerList='" + getViewerList() + "'" +
             ", documentTitle='" + getDocumentTitle() + "'" +
             ", documentContent='" + getDocumentContent() + "'" +
-            ", documentContentContentType='" + getDocumentContentContentType() + "'" +
             ", createdDate='" + getCreatedDate() + "'" +
             ", modifiedDate='" + getModifiedDate() + "'" +
-            ", locationOfTheDocument='" + getLocationOfTheDocument() + "'" +
             "}";
     }
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button, Table } from 'reactstrap';
-import { openFile, byteSize, Translate, TextFormat } from 'react-jhipster';
+import { Translate, TextFormat } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
@@ -47,14 +47,11 @@ export const Document = () => {
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Collaborator List</th>
-                <th>Viewer List</th>
                 <th>Document Title</th>
                 <th>Document Content</th>
                 <th>Created Date</th>
                 <th>Modified Date</th>
-                <th>Location Of The Document</th>
-                <th>Owner</th>
+                <th>User</th>
                 <th />
               </tr>
             </thead>
@@ -66,27 +63,13 @@ export const Document = () => {
                       {document.id}
                     </Button>
                   </td>
-                  <td>{document.collaboratorList}</td>
-                  <td>{document.viewerList}</td>
                   <td>{document.documentTitle}</td>
-                  <td>
-                    {document.documentContent ? (
-                      <div>
-                        {document.documentContentContentType ? (
-                          <a onClick={openFile(document.documentContentContentType, document.documentContent)}>Open &nbsp;</a>
-                        ) : null}
-                        <span>
-                          {document.documentContentContentType}, {byteSize(document.documentContent)}
-                        </span>
-                      </div>
-                    ) : null}
-                  </td>
+                  <td>{document.documentContent}</td>
                   <td>{document.createdDate ? <TextFormat type="date" value={document.createdDate} format={APP_DATE_FORMAT} /> : null}</td>
                   <td>
                     {document.modifiedDate ? <TextFormat type="date" value={document.modifiedDate} format={APP_DATE_FORMAT} /> : null}
                   </td>
-                  <td>{document.locationOfTheDocument}</td>
-                  <td>{document.owner ? document.owner.login : ''}</td>
+                  <td>{document.user ? document.user.login : ''}</td>
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`/document/${document.id}`} color="info" size="sm" data-cy="entityDetailsButton">

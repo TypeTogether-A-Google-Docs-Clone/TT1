@@ -6,21 +6,13 @@
   "entityTableName": "document",
   "fields": [
     {
-      "fieldName": "collaboratorList",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "viewerList",
-      "fieldType": "String"
-    },
-    {
       "fieldName": "documentTitle",
-      "fieldType": "String"
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "documentContent",
-      "fieldType": "byte[]",
-      "fieldTypeBlobContent": "any"
+      "fieldType": "String"
     },
     {
       "fieldName": "createdDate",
@@ -29,10 +21,6 @@
     {
       "fieldName": "modifiedDate",
       "fieldType": "Instant"
-    },
-    {
-      "fieldName": "locationOfTheDocument",
-      "fieldType": "String"
     }
   ],
   "fluentMethods": true,
@@ -44,7 +32,7 @@
     {
       "otherEntityField": "login",
       "otherEntityName": "user",
-      "relationshipName": "owner",
+      "relationshipName": "user",
       "relationshipType": "many-to-one"
     }
   ],
