@@ -8,3 +8,11 @@ Main page styles
   background: url('../../../content/images/jhipster_family_member_0.svg') no-repeat center top;
   background-size: contain;
 }
+
+.buttons {
+  display: flex;
+}
+
+.createbutton {
+  margin-left: 10px;
+}
