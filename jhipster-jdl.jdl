@@ -1,0 +1,12 @@
+entity Document {
+    documentTitle String required
+    documentContent String
+    createdDate Instant
+    modifiedDate Instant
+}
+relationship ManyToOne{
+	Document{user(login)} to User
+}
+
+dto * with mapstruct
+service * with serviceClass

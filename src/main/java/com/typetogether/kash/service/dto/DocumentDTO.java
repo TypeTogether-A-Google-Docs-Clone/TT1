@@ -3,7 +3,7 @@ package com.typetogether.kash.service.dto;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
-import javax.persistence.Lob;
+import javax.validation.constraints.*;
 
 /**
  * A DTO for the {@link com.typetogether.kash.domain.Document} entity.
@@ -13,23 +13,16 @@ public class DocumentDTO implements Serializable {
 
     private Long id;
 
-    private String collaboratorList;
-
-    private String viewerList;
-
+    @NotNull
     private String documentTitle;
 
-    @Lob
-    private byte[] documentContent;
+    private String documentContent;
 
-    private String documentContentContentType;
     private Instant createdDate;
 
     private Instant modifiedDate;
 
-    private String locationOfTheDocument;
-
-    private UserDTO owner;
+    private UserDTO user;
 
     public Long getId() {
         return id;
@@ -37,22 +30,6 @@ public class DocumentDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getCollaboratorList() {
-        return collaboratorList;
-    }
-
-    public void setCollaboratorList(String collaboratorList) {
-        this.collaboratorList = collaboratorList;
-    }
-
-    public String getViewerList() {
-        return viewerList;
-    }
-
-    public void setViewerList(String viewerList) {
-        this.viewerList = viewerList;
     }
 
     public String getDocumentTitle() {
@@ -63,20 +40,12 @@ public class DocumentDTO implements Serializable {
         this.documentTitle = documentTitle;
     }
 
-    public byte[] getDocumentContent() {
+    public String getDocumentContent() {
         return documentContent;
     }
 
-    public void setDocumentContent(byte[] documentContent) {
+    public void setDocumentContent(String documentContent) {
         this.documentContent = documentContent;
-    }
-
-    public String getDocumentContentContentType() {
-        return documentContentContentType;
-    }
-
-    public void setDocumentContentContentType(String documentContentContentType) {
-        this.documentContentContentType = documentContentContentType;
     }
 
     public Instant getCreatedDate() {
@@ -95,20 +64,12 @@ public class DocumentDTO implements Serializable {
         this.modifiedDate = modifiedDate;
     }
 
-    public String getLocationOfTheDocument() {
-        return locationOfTheDocument;
+    public UserDTO getUser() {
+        return user;
     }
 
-    public void setLocationOfTheDocument(String locationOfTheDocument) {
-        this.locationOfTheDocument = locationOfTheDocument;
-    }
-
-    public UserDTO getOwner() {
-        return owner;
-    }
-
-    public void setOwner(UserDTO owner) {
-        this.owner = owner;
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 
     @Override
@@ -137,14 +98,11 @@ public class DocumentDTO implements Serializable {
     public String toString() {
         return "DocumentDTO{" +
             "id=" + getId() +
-            ", collaboratorList='" + getCollaboratorList() + "'" +
-            ", viewerList='" + getViewerList() + "'" +
             ", documentTitle='" + getDocumentTitle() + "'" +
             ", documentContent='" + getDocumentContent() + "'" +
             ", createdDate='" + getCreatedDate() + "'" +
             ", modifiedDate='" + getModifiedDate() + "'" +
-            ", locationOfTheDocument='" + getLocationOfTheDocument() + "'" +
-            ", owner=" + getOwner() +
+            ", user=" + getUser() +
             "}";
     }
 }

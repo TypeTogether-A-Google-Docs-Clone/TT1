@@ -14,19 +14,10 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="collaborator_list" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="viewer_list" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
             <column name="document_title" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
-            <column name="document_content" type="${blobType}">
-                <constraints nullable="true" />
-            </column>
-            <column name="document_content_content_type" type="varchar(255)">
+            <column name="document_content" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="created_date" type="${datetimeType}">
@@ -35,10 +26,7 @@
             <column name="modified_date" type="${datetimeType}">
                 <constraints nullable="true" />
             </column>
-            <column name="location_of_the_document" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="owner_id" type="bigint">
+            <column name="user_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
@@ -64,14 +52,10 @@
                   tableName="document"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
-            <column name="collaborator_list" type="string"/>
-            <column name="viewer_list" type="string"/>
             <column name="document_title" type="string"/>
-            <column name="document_content" type="blob"/>
-            <column name="document_content_content_type" type="string"/>
+            <column name="document_content" type="string"/>
             <column name="created_date" type="date"/>
             <column name="modified_date" type="date"/>
-            <column name="location_of_the_document" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

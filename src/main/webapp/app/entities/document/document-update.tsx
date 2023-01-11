@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Button, Row, Col, FormText } from 'reactstrap';
-import { isNumber, ValidatedField, ValidatedForm, ValidatedBlobField } from 'react-jhipster';
+import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
@@ -54,7 +54,7 @@ export const DocumentUpdate = () => {
     const entity = {
       ...documentEntity,
       ...values,
-      owner: users.find(it => it.id.toString() === values.owner.toString()),
+      user: users.find(it => it.id.toString() === values.user.toString()),
     };
 
     if (isNew) {
@@ -74,7 +74,7 @@ export const DocumentUpdate = () => {
           ...documentEntity,
           createdDate: convertDateTimeFromServer(documentEntity.createdDate),
           modifiedDate: convertDateTimeFromServer(documentEntity.modifiedDate),
-          owner: documentEntity?.owner?.id,
+          user: documentEntity?.user?.id,
         };
 
   return (
@@ -94,20 +94,21 @@ export const DocumentUpdate = () => {
             <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}>
               {!isNew ? <ValidatedField name="id" required readOnly id="document-id" label="ID" validate={{ required: true }} /> : null}
               <ValidatedField
-                label="Collaborator List"
-                id="document-collaboratorList"
-                name="collaboratorList"
-                data-cy="collaboratorList"
+                label="Document Title"
+                id="document-documentTitle"
+                name="documentTitle"
+                data-cy="documentTitle"
                 type="text"
+                validate={{
+                  required: { value: true, message: 'This field is required.' },
+                }}
               />
-              <ValidatedField label="Viewer List" id="document-viewerList" name="viewerList" data-cy="viewerList" type="text" />
-              <ValidatedField label="Document Title" id="document-documentTitle" name="documentTitle" data-cy="documentTitle" type="text" />
-              <ValidatedBlobField
+              <ValidatedField
                 label="Document Content"
                 id="document-documentContent"
                 name="documentContent"
                 data-cy="documentContent"
-                openActionLabel="Open"
+                type="text"
               />
               <ValidatedField
                 label="Created Date"
@@ -125,14 +126,7 @@ export const DocumentUpdate = () => {
                 type="datetime-local"
                 placeholder="YYYY-MM-DD HH:mm"
               />
-              <ValidatedField
-                label="Location Of The Document"
-                id="document-locationOfTheDocument"
-                name="locationOfTheDocument"
-                data-cy="locationOfTheDocument"
-                type="text"
-              />
-              <ValidatedField id="document-owner" name="owner" data-cy="owner" label="Owner" type="select">
+              <ValidatedField id="document-user" name="user" data-cy="user" label="User" type="select">
                 <option value="" key="0" />
                 {users
                   ? users.map(otherEntity => (
