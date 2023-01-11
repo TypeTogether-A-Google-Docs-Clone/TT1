@@ -1,9 +1,13 @@
 import './home.scss';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Row, Col, Alert } from 'reactstrap';
-import { useAppSelector } from 'app/config/store';
-import React, { useRef } from 'react';
+import { useAppSelector, useAppDispatch } from 'app/config/store';
+import React, { useRef, useEffect } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
+import { IDocument } from 'app/shared/model/document.model';
+import { getEntities } from 'app/entities/document/document.reducer';
+import { Button } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const Home = () => {
   const account = useAppSelector(state => state.authentication.account);
@@ -13,10 +17,25 @@ export const Home = () => {
       console.log(editorRef.current.getContent());
     }
   };
+  const dispatch = useAppDispatch();
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const documentList = useAppSelector(state => state.document.entities);
+  const loading = useAppSelector(state => state.document.loading);
+
+  useEffect(() => {
+    dispatch(getEntities({}));
+  }, []);
+
+  const handleSyncList = () => {
+    dispatch(getEntities({}));
+  };
 
   return (
     <div>
-      <h2>Home</h2>
+      <h2>Welcome to TypeTogether</h2>
       <p className="lead">This is your homepage</p>
 
       <Row>
@@ -24,7 +43,7 @@ export const Home = () => {
         {/*           <span className="hipster rounded" /> */}
         {/*         </Col> */}
         <Col md="9">
-          <h2>Welcome, Java Hipster!</h2>
+          {/*           <h2>Welcome, Java Hipster!</h2> */}
           <p className="lead">Quick Create Document</p>
           {account?.login ? (
             <div>
@@ -90,6 +109,12 @@ export const Home = () => {
           {/*           </p> */}
         </Col>
       </Row>
+      <div className="d-flex justify-content-end">
+        <Link to="/document/new" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp; Create a new Document
+        </Link>
+      </div>
       <Editor
         apiKey="pc7rqzul9mdcfrch6wdkvminyzqgq5isq7dd7jj5pdikjwnb"
         onInit={(evt, editor) => (editorRef.current = editor)}
