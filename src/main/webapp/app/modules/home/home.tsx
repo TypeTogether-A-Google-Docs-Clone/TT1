@@ -1,13 +1,17 @@
 import './home.scss';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Row, Col, Alert } from 'reactstrap';
 import { useAppSelector, useAppDispatch } from 'app/config/store';
 import React, { useRef, useEffect } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { IDocument } from 'app/shared/model/document.model';
-import { getEntities } from 'app/entities/document/document.reducer';
+import { getEntities, createEntity, updateEntity } from 'app/entities/document/document.reducer';
 import { Button } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster';
+import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
+import { IUser } from 'app/shared/model/user.model';
+import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 
 export const Home = () => {
   const account = useAppSelector(state => state.authentication.account);
@@ -22,7 +26,7 @@ export const Home = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const documentList = useAppSelector(state => state.document.entities);
+  const documentEntity = useAppSelector(state => state.document.entity);
   const loading = useAppSelector(state => state.document.loading);
 
   useEffect(() => {
@@ -32,6 +36,42 @@ export const Home = () => {
   const handleSyncList = () => {
     dispatch(getEntities({}));
   };
+
+  const { id } = useParams<'id'>();
+
+  const isNew = id === undefined;
+
+  const users = useAppSelector(state => state.userManagement.users);
+
+  const saveEntity = values => {
+    values.createdDate = convertDateTimeToServer(values.createdDate);
+    values.modifiedDate = convertDateTimeToServer(values.modifiedDate);
+
+    const entity = {
+      ...documentEntity,
+      ...values,
+      user: users.find(it => it.id.toString() === values.user.toString()),
+    };
+
+    if (isNew) {
+      dispatch(createEntity(entity));
+    } else {
+      dispatch(updateEntity(entity));
+    }
+  };
+
+  const defaultValues = () =>
+    isNew
+      ? {
+          createdDate: displayDefaultDateTime(),
+          modifiedDate: displayDefaultDateTime(),
+        }
+      : {
+          ...documentEntity,
+          createdDate: convertDateTimeFromServer(documentEntity.createdDate),
+          modifiedDate: convertDateTimeFromServer(documentEntity.modifiedDate),
+          user: documentEntity?.user?.id,
+        };
 
   return (
     <div>
@@ -44,7 +84,7 @@ export const Home = () => {
         {/*         </Col> */}
         <Col md="9">
           {/*           <h2>Welcome, Java Hipster!</h2> */}
-          <p className="lead">Quick Create Document</p>
+          {/*           <p className="lead">Quick Create Document</p> */}
           {account?.login ? (
             <div>
               <Alert color="success">You are logged in as user &quot;{account.login}&quot;.</Alert>
@@ -115,6 +155,18 @@ export const Home = () => {
           &nbsp; Create a new Document
         </Link>
       </div>
+      <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}>
+        <ValidatedField
+          label="Document Title"
+          id="document-documentTitle"
+          name="documentTitle"
+          data-cy="documentTitle"
+          type="text"
+          validate={{
+            required: { value: true, message: 'This field is required.' },
+          }}
+        />
+      </ValidatedForm>
       <Editor
         apiKey="pc7rqzul9mdcfrch6wdkvminyzqgq5isq7dd7jj5pdikjwnb"
         onInit={(evt, editor) => (editorRef.current = editor)}
@@ -150,8 +202,8 @@ export const Home = () => {
           content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
         }}
       />
-      <button onClick={log}>Log editor content</button>
-      <textarea id="textarea"></textarea>
+      {/*       <button onClick={log}>Log editor content</button> */}
+      {/*       <textarea id="textarea"></textarea> */}
     </div>
   );
 };
