@@ -115,6 +115,7 @@ export const Home = () => {
           )}
         </Col>
       </Row>
+
       <div className="buttons">
         <div className="managementbutton">
           <Link to="/document" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
