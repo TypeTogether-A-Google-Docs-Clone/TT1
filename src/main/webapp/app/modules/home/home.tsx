@@ -2,7 +2,7 @@ import './home.scss';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Row, Col, Alert } from 'reactstrap';
 import { useAppSelector, useAppDispatch } from 'app/config/store';
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { IDocument } from 'app/shared/model/document.model';
 import { getEntities, createEntity, updateEntity } from 'app/entities/document/document.reducer';
@@ -12,6 +12,7 @@ import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { IUser } from 'app/shared/model/user.model';
 import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
+import { mapIdList } from 'app/shared/util/entity-utils';
 
 export const Home = () => {
   const account = useAppSelector(state => state.authentication.account);
@@ -22,13 +23,13 @@ export const Home = () => {
     }
   };
   const dispatch = useAppDispatch();
-
   const location = useLocation();
   const navigate = useNavigate();
-
   const documentEntity = useAppSelector(state => state.document.entity);
   const loading = useAppSelector(state => state.document.loading);
   const updating = useAppSelector(state => state.document.updating);
+  const users = useAppSelector(state => state.userManagement.users);
+  const updateSuccess = useAppSelector(state => state.document.updateSuccess);
 
   useEffect(() => {
     dispatch(getEntities({}));
@@ -41,8 +42,6 @@ export const Home = () => {
   const { id } = useParams<'id'>();
 
   const isNew = id === undefined;
-
-  const users = useAppSelector(state => state.userManagement.users);
 
   const saveEntity = values => {
     values.createdDate = convertDateTimeToServer(values.createdDate);
@@ -123,18 +122,19 @@ export const Home = () => {
             &nbsp; Document Management
           </Link>
         </div>
-        <div className="createbutton">
-          {/*         <Link to="/document/new" className="btn btn-success jh-create-entity" id="jh-save-entity" data-cy="entityCreateButton"> */}
-          {/*           <FontAwesomeIcon icon="save" /> */}
-          {/*           &nbsp; Save Current Document */}
-          {/*         </Link> */}
-          <Button color="success" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
-            <FontAwesomeIcon icon="save" />
-            &nbsp; Save Current Document
-          </Button>
-        </div>
+        {/*         <div className="createbutton"> */}
+        {/*                   <Link to="/document/new" className="btn btn-success jh-create-entity" id="jh-save-entity" data-cy="entityCreateButton"> */}
+        {/*                     <FontAwesomeIcon icon="save" /> */}
+        {/*                     &nbsp; Save Current Document */}
+        {/*                   </Link> */}
+        {/*           <Button color="success" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}> */}
+        {/*             <FontAwesomeIcon icon="save" /> */}
+        {/*             &nbsp; Save Current Document */}
+        {/*           </Button> */}
+        {/*         </div> */}
       </div>
       <ValidatedForm defaultValues={defaultValues()} onSubmit={createEntity}>
+        {!isNew ? <ValidatedField name="id" required readOnly id="document-id" label="ID" validate={{ required: true }} /> : null}
         <ValidatedField
           label="Document Title (* required)"
           id="document-documentTitle"
@@ -145,44 +145,57 @@ export const Home = () => {
             required: { value: true, message: 'This field is required.' },
           }}
         />
+
+        <Editor
+          apiKey="pc7rqzul9mdcfrch6wdkvminyzqgq5isq7dd7jj5pdikjwnb"
+          onInit={(evt, editor) => (editorRef.current = editor)}
+          initialValue="<p>This is the initial content of the editor.</p>"
+          init={{
+            height: 500,
+            menubar: false,
+            plugins: [
+              'advlist',
+              'autolink',
+              'lists',
+              'link',
+              'image',
+              'charmap',
+              'preview',
+              'anchor',
+              'searchreplace',
+              'visualblocks',
+              'code',
+              'fullscreen',
+              'insertdatetime',
+              'media',
+              'table',
+              'code',
+              'help',
+              'wordcount',
+            ],
+            toolbar:
+              'undo redo | blocks | ' +
+              'bold italic forecolor | alignleft aligncenter ' +
+              'alignright alignjustify | bullist numlist outdent indent | ' +
+              'removeformat | help',
+            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+          }}
+        />
+        <div className="saveButton">
+          <button
+            className="btn btn-success jh-create-entity"
+            id="save-entity"
+            data-cy="entityCreateSaveButton"
+            type="submit"
+            disabled={updating}
+            onClick={log}
+          >
+            <FontAwesomeIcon icon="save" />
+            &nbsp;Save Document
+          </button>
+        </div>
+        {/*       <textarea id="textarea"></textarea> */}
       </ValidatedForm>
-      <Editor
-        apiKey="pc7rqzul9mdcfrch6wdkvminyzqgq5isq7dd7jj5pdikjwnb"
-        onInit={(evt, editor) => (editorRef.current = editor)}
-        initialValue="<p>This is the initial content of the editor.</p>"
-        init={{
-          height: 500,
-          menubar: false,
-          plugins: [
-            'advlist',
-            'autolink',
-            'lists',
-            'link',
-            'image',
-            'charmap',
-            'preview',
-            'anchor',
-            'searchreplace',
-            'visualblocks',
-            'code',
-            'fullscreen',
-            'insertdatetime',
-            'media',
-            'table',
-            'code',
-            'help',
-            'wordcount',
-          ],
-          toolbar:
-            'undo redo | blocks | ' +
-            'bold italic forecolor | alignleft aligncenter ' +
-            'alignright alignjustify | bullist numlist outdent indent | ' +
-            'removeformat | help',
-          content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-        }}
-      />
-      {/*       <button onClick={log}>Log editor content</button> */}
-      {/*       <textarea id="textarea"></textarea> */}
     </div>
   );
 };
