@@ -71,21 +71,28 @@ export const Home = (props: any) => {
   };
   const [dirty, setDirty] = useState(false);
   useEffect(() => setDirty(false), ['']);
-  const save = () => {
-    if (editorRef.current) {
-      const content = editorRef.current.getContent();
-      setDirty(false);
-      editorRef.current.setDirty(false);
-      // an application would save the editor content to the server here
-      // and set the save status to 'Saved'
-      console.log(content);
-      let contentSaved = editorRef.current.getContent();
-      axios.post('http://localhost:9000/api/documents', {
-        content: contentSaved,
-        createdDate: today,
-        modifiedDate: today,
-        user: account,
-      });
+  const save = async () => {
+    try {
+      if (editorRef.current) {
+        const content = editorRef.current.getContent();
+        setDirty(false);
+        editorRef.current.setDirty(false);
+        setSaveStatus('Saving...');
+        const response = await axios.post('/api/documents', {
+          documentTitle: 'test',
+          documentContent: content,
+          createdDate: '2023-01-13T05:04:47.526Z',
+          modifiedDate: '2023-01-13T05:04:47.526Z',
+          user: {
+            id: account.id,
+            login: account.login,
+          },
+        });
+        setSaveStatus('Saved');
+      }
+    } catch (error) {
+      console.log(error);
+      //handle error here
     }
   };
   const handleEditorChange = (content, editor) => {
