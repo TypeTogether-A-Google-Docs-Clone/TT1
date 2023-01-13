@@ -2,7 +2,8 @@
 // Import Bootstrap source files from node_modules
 @import '~bootstrap/scss/bootstrap';
 body {
-  background: #fafafa;
+  background: linear-gradient(to right, #00b09b, #96c93d);
+  //   background: #fafafa;
   margin: 0;
 }
 
@@ -30,6 +31,7 @@ a {
     overflow-x: hidden;
     padding: 1rem;
     .card {
+      background: transparent;
       padding: 1rem;
     }
     .view-routes {
