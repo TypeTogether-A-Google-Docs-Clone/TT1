@@ -118,29 +118,32 @@ export const Home = (props: any) => {
       <h2>Welcome to TypeTogether</h2>
       <p className="lead">This is your homepage</p>
       <Row>
-        <Col md="9">
+        <Col md="12">
           {account?.login ? (
             <div className="Typetogether">
               <div>
                 <Alert color="success">You are logged in as user &quot;{account.login}&quot;.</Alert>
               </div>
               <div className="buttonFun">
-                <Link to="/document/new" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
-                  <FontAwesomeIcon icon="plus" />
-                  &nbsp; Create a new Document
-                </Link>
                 <Link to="/document" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
                   <FontAwesomeIcon icon="plus" />
                   &nbsp; View Your Documents
                 </Link>
-                <button onClick={log}>Log editor content</button>
-                <Button color="primary" onClick={save}>
-                  Save
-                </Button>
-                {dirty && <p>You have unsaved content!</p>}
-                <textarea id="textarea"></textarea>
-              </div>
 
+                {dirty && <p>You have unsaved content!</p>}
+              </div>
+              <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}>
+                <ValidatedField
+                  label="Document Title"
+                  id="document-documentTitle"
+                  name="documentTitle"
+                  data-cy="documentTitle"
+                  type="text"
+                  validate={{
+                    required: { value: true, message: 'This field is required.' },
+                  }}
+                />
+              </ValidatedForm>
               <Editor
                 id="editor"
                 apiKey="pc7rqzul9mdcfrch6wdkvminyzqgq5isq7dd7jj5pdikjwnb"
@@ -178,6 +181,12 @@ export const Home = (props: any) => {
                   content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
                 }}
               />
+              <div className="savebutton">
+                <Button color="info" onClick={save}>
+                  <FontAwesomeIcon icon="save" />
+                  &nbsp; Save Document
+                </Button>
+              </div>
             </div>
           ) : (
             <div>
@@ -202,18 +211,6 @@ export const Home = (props: any) => {
           )}
         </Col>
       </Row>
-      <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}>
-        <ValidatedField
-          label="Document Title"
-          id="document-documentTitle"
-          name="documentTitle"
-          data-cy="documentTitle"
-          type="text"
-          validate={{
-            required: { value: true, message: 'This field is required.' },
-          }}
-        />
-      </ValidatedForm>
     </div>
   );
 };
