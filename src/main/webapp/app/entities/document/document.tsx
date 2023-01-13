@@ -48,10 +48,10 @@ export const Document = () => {
               <tr>
                 <th>ID</th>
                 <th>Document Title</th>
-                <th>Document Content</th>
+
                 <th>Created Date</th>
                 <th>Modified Date</th>
-                <th>User</th>
+
                 <th />
               </tr>
             </thead>
@@ -64,12 +64,12 @@ export const Document = () => {
                     </Button>
                   </td>
                   <td>{document.documentTitle}</td>
-                  <td>{document.documentContent}</td>
+
                   <td>{document.createdDate ? <TextFormat type="date" value={document.createdDate} format={APP_DATE_FORMAT} /> : null}</td>
                   <td>
                     {document.modifiedDate ? <TextFormat type="date" value={document.modifiedDate} format={APP_DATE_FORMAT} /> : null}
                   </td>
-                  <td>{document.user ? document.user.login : ''}</td>
+
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`/document/${document.id}`} color="info" size="sm" data-cy="entityDetailsButton">
