@@ -16,3 +16,22 @@ Main page styles
   float: right;
   margin-top: 10px;
 }
+
+.myblock {
+  width: 1380px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+}
+
+.mypara {
+  text-align: right;
+}
+
+.myh3 {
+  color: white;
+}
+
+.myh4 {
+  color: white;
+}
