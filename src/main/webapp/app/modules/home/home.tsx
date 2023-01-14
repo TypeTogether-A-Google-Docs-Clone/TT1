@@ -39,9 +39,9 @@ export const Home = (props: any) => {
   const documentEntity = useAppSelector(state => state.document.entity);
   const loading = useAppSelector(state => state.document.loading);
 
-  useEffect(() => {
-    dispatch(getEntities({}));
-  }, []);
+  //   useEffect(() => {
+  //     dispatch(getEntities({}));
+  //   }, []);
 
   const handleSyncList = () => {
     dispatch(getEntities({}));
@@ -115,12 +115,12 @@ export const Home = (props: any) => {
         };
   return (
     <div>
-      <h2>Welcome to TypeTogether</h2>
-      <p className="lead">This is your homepage</p>
+      <p></p>
       <Row>
         <Col md="12">
           {account?.login ? (
             <div className="Typetogether">
+              <h2>Welcome to TypeTogether</h2>
               <div>
                 <Alert color="success">You are logged in as user &quot;{account.login}&quot;.</Alert>
               </div>
@@ -189,24 +189,31 @@ export const Home = (props: any) => {
               </div>
             </div>
           ) : (
-            <div>
-              <Alert color="warning">
-                If you want to
-                <span>&nbsp;</span>
-                <Link to="/login" className="alert-link">
-                  sign in
-                </Link>
-                , you can try the default accounts:
-                <br />- Administrator (login=&quot;admin&quot; and password=&quot;admin&quot;) <br />- User (login=&quot;user&quot; and
-                password=&quot;user&quot;).
-              </Alert>
-
-              <Alert color="warning">
+            <div id="mybigblock" className="myblock">
+              <div id="linksblock">
+                <h3 className="myh3">Together We Create</h3>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <h4 className="myh4">
+                  <i>"Coming together is a beginning, staying together is progress, and working together is success"</i>
+                </h4>
+                <p className="mypara">-Henry Ford&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                <br />
+                <br />
+                <br />
+                <br />
                 You don&apos;t have an account yet?&nbsp;
                 <Link to="/account/register" className="alert-link">
                   Register a new account
                 </Link>
-              </Alert>
+              </div>
+              <div id="imageblock">
+                <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d" width="800" height="400" className="coll-img" />
+              </div>
             </div>
           )}
         </Col>
