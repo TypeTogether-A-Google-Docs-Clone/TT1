@@ -113,6 +113,7 @@ export const Home = (props: any) => {
           modifiedDate: convertDateTimeFromServer(documentEntity.modifiedDate),
           user: documentEntity?.user?.id,
         };
+
   return (
     <div>
       <p></p>
@@ -210,6 +211,15 @@ export const Home = (props: any) => {
                 <Link to="/account/register" className="alert-link">
                   Register a new account
                 </Link>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
               </div>
               <div id="imageblock">
                 <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d" width="800" height="400" className="coll-img" />
