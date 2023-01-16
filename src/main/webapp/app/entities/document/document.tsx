@@ -49,7 +49,6 @@ export const Document = () => {
                 <th>Document Title</th>
                 <th>Created Date</th>
                 <th>Modified Date</th>
-
                 <th />
               </tr>
             </thead>
