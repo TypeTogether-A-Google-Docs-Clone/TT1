@@ -17,7 +17,7 @@ import axios from 'axios';
 export const Home = (props: any) => {
   const [editorContent, setEditorContent] = useState('');
   //content that the TinyMCE editor initializes to
-  const [initialContent, setInitialContent] = useState('');
+  //   const [initialContent, setInitialContent] = useState('');
   const [saveStatus, setSaveStatus] = useState('');
   //toggles TinyMCE editability
   const [readOnly, setReadOnly] = useState(false);

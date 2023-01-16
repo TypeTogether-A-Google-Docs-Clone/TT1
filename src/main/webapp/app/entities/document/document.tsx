@@ -46,9 +46,7 @@ export const Document = () => {
           <Table responsive>
             <thead>
               <tr>
-                <th>ID</th>
                 <th>Document Title</th>
-
                 <th>Created Date</th>
                 <th>Modified Date</th>
 
@@ -60,10 +58,9 @@ export const Document = () => {
                 <tr key={`entity-${i}`} data-cy="entityTable">
                   <td>
                     <Button tag={Link} to={`/document/${document.id}`} color="link" size="sm">
-                      {document.id}
+                      {document.documentTitle}
                     </Button>
                   </td>
-                  <td>{document.documentTitle}</td>
 
                   <td>{document.createdDate ? <TextFormat type="date" value={document.createdDate} format={APP_DATE_FORMAT} /> : null}</td>
                   <td>
