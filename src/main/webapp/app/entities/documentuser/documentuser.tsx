@@ -63,7 +63,11 @@ export const DocumentUser = () => {
                       {documentuser.id}
                     </Button>
                   </td>
-                  <td>{documentuser.documentTitle}</td>
+                  <td>
+                    <Button tag={Link} to={`/document/${documentuser.id}`} color="link" size="sm">
+                      {documentuser.documentTitle}
+                    </Button>
+                  </td>
                   <td>{documentuser.documentContent}</td>
                   <td>
                     {documentuser.createdDate ? <TextFormat type="date" value={documentuser.createdDate} format={APP_DATE_FORMAT} /> : null}
