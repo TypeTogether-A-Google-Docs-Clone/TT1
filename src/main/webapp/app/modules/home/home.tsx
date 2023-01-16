@@ -79,7 +79,7 @@ export const Home = (props: any) => {
         editorRef.current.setDirty(false);
         setSaveStatus('Saving...');
         const response = await axios.post('/api/documents', {
-          documentTitle: 'test',
+          documentTitle: 'Quick Document',
           documentContent: content,
           createdDate: '2023-01-13T05:04:47.526Z',
           modifiedDate: '2023-01-13T05:04:47.526Z',

@@ -47,7 +47,7 @@ export const DocumentDetail = () => {
               <Editor
                 apiKey="pc7rqzul9mdcfrch6wdkvminyzqgq5isq7dd7jj5pdikjwnb"
                 onInit={(evt, editor) => (editorRef.current = editor)}
-                initialValue="<p>This is the initial content of the editor.</p>"
+                initialValue={documentEntity.documentContent}
                 init={{
                   height: 500,
                   menubar: false,
