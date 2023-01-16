@@ -46,9 +46,7 @@ export const Document = () => {
           <Table responsive>
             <thead>
               <tr>
-                <th>ID</th>
                 <th>Document Title</th>
-
                 <th>Created Date</th>
                 <th>Modified Date</th>
 
@@ -58,11 +56,6 @@ export const Document = () => {
             <tbody>
               {documentList.map((document, i) => (
                 <tr key={`entity-${i}`} data-cy="entityTable">
-                  <td>
-                    <Button tag={Link} to={`/document/${document.id}`} color="link" size="sm">
-                      {document.id}
-                    </Button>
-                  </td>
                   <td>
                     <Button tag={Link} to={`/document/${document.id}`} color="link" size="sm">
                       {document.documentTitle}
