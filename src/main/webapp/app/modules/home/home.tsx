@@ -43,6 +43,9 @@ export const Home = (props: any) => {
   //     dispatch(getEntities({}));
   //   }, []);
 
+  const date = new Date();
+  const showTime = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+
   const handleSyncList = () => {
     dispatch(getEntities({}));
   };
@@ -81,8 +84,8 @@ export const Home = (props: any) => {
         const response = await axios.post('/api/documents', {
           documentTitle: 'Quick Document',
           documentContent: content,
-          createdDate: '2023-01-13T05:04:47.526Z',
-          modifiedDate: '2023-01-13T05:04:47.526Z',
+          createdDate: new Date(),
+          modifiedDate: new Date(),
           user: {
             id: account.id,
             login: account.login,
