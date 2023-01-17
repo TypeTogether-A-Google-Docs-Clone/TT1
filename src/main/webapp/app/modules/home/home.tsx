@@ -6,9 +6,10 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { IDocument } from 'app/shared/model/document.model';
 import { getEntities, createEntity, updateEntity } from 'app/entities/document/document.reducer';
-import { Button } from 'reactstrap';
+import { Button, Table } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster';
+import { isNumber, ValidatedField, ValidatedForm, Translate, TextFormat } from 'react-jhipster';
+import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { IUser } from 'app/shared/model/user.model';
 import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
@@ -16,44 +17,23 @@ import axios from 'axios';
 
 export const Home = (props: any) => {
   const [editorContent, setEditorContent] = useState('');
-  //content that the TinyMCE editor initializes to
-  //   const [initialContent, setInitialContent] = useState('');
   const [saveStatus, setSaveStatus] = useState('');
-  //toggles TinyMCE editability
   const [readOnly, setReadOnly] = useState(false);
-
-  //assigned logged in account information to account
   const account = useAppSelector(state => state.authentication.account);
   const today = new Date().toISOString().substring(0, 10);
   const editorRef = useRef(null);
-  const log = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
-    }
-  };
   const dispatch = useAppDispatch();
-
   const location = useLocation();
   const navigate = useNavigate();
-
   const documentEntity = useAppSelector(state => state.document.entity);
   const loading = useAppSelector(state => state.document.loading);
-
-  //   useEffect(() => {
-  //     dispatch(getEntities({}));
-  //   }, []);
-
   const date = new Date();
   const showTime = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-
   const handleSyncList = () => {
     dispatch(getEntities({}));
   };
-
   const { id } = useParams<'id'>();
-
   const isNew = id === undefined;
-
   const users = useAppSelector(state => state.userManagement.users);
 
   const saveEntity = values => {
@@ -72,8 +52,10 @@ export const Home = (props: any) => {
       dispatch(updateEntity(entity));
     }
   };
+
   const [dirty, setDirty] = useState(false);
   useEffect(() => setDirty(false), ['']);
+
   const save = async () => {
     try {
       if (editorRef.current) {
@@ -95,14 +77,25 @@ export const Home = (props: any) => {
       }
     } catch (error) {
       console.log(error);
-      //handle error here
     }
   };
+
   const handleEditorChange = (content, editor) => {
     if (editorRef.current) {
       setDirty(editorRef.current.isDirty());
     }
   };
+
+  const log = () => {
+    if (editorRef.current) {
+      console.log(editorRef.current.getContent());
+    }
+  };
+
+  const documentList = useAppSelector(state => state.document.entities);
+  useEffect(() => {
+    dispatch(getEntities({}));
+  }, []);
 
   const defaultValues = () =>
     isNew
@@ -138,58 +131,46 @@ export const Home = (props: any) => {
                   <FontAwesomeIcon icon="plus" />
                   &nbsp; View Your Documents
                 </Link>
-
                 {dirty && <p>You have unsaved content!</p>}
               </div>
-              <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}>
-                <ValidatedField
-                  label="Document Title"
-                  id="document-documentTitle"
-                  name="documentTitle"
-                  data-cy="documentTitle"
-                  type="text"
-                  validate={{
-                    required: { value: true, message: 'This field is required.' },
-                  }}
-                />
-              </ValidatedForm>
-              <Editor
-                id="editor"
-                apiKey="pc7rqzul9mdcfrch6wdkvminyzqgq5isq7dd7jj5pdikjwnb"
-                onInit={(evt, editor) => (editorRef.current = editor)}
-                initialValue="Hello World"
-                init={{
-                  height: 500,
-                  menubar: true,
-                  skin: 'fluent',
-                  plugins: [
-                    'advlist',
-                    'autolink',
-                    'lists',
-                    'link',
-                    'image',
-                    'charmap',
-                    'preview',
-                    'anchor',
-                    'searchreplace',
-                    'visualblocks',
-                    'code',
-                    'fullscreen',
-                    'insertdatetime',
-                    'media',
-                    'table',
-                    'code',
-                    'help',
-                    'wordcount',
-                  ],
-                  toolbar:
-                    'undo redo | blocks | ' +
-                    'bold italic forecolor | alignleft aligncenter ' +
-                    'alignright alignjustify | bullist numlist outdent indent | ' +
-                    'removeformat | help',
-                  content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-                }}
-              />
+              <div className="table-responsive">
+                {documentList && documentList.length > 0 ? (
+                  <Table responsive>
+                    <thead>
+                      <tr>
+                        <th>Document Title</th>
+                        <th>Created Date</th>
+                        <th>Modified Date</th>
+                        <th />
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {documentList.map((document, i) => (
+                        <tr key={`entity-${i}`} data-cy="entityTable">
+                          <td>
+                            <Button className="viewdocanchorlink" tag={Link} to={`/document/${document.id}`} color="link" size="lg">
+                              {document.documentTitle}
+                            </Button>
+                          </td>
+                          <td>
+                            {document.createdDate ? <TextFormat type="date" value={document.createdDate} format={APP_DATE_FORMAT} /> : null}
+                          </td>
+                          <td>
+                            {document.modifiedDate ? (
+                              <TextFormat type="date" value={document.modifiedDate} format={APP_DATE_FORMAT} />
+                            ) : null}
+                          </td>
+                          <td className="text-end">
+                            <div className="btn-group flex-btn-group-container"></div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                ) : (
+                  !loading && <div className="alert alert-warning">No Documents found</div>
+                )}
+              </div>
               <div className="savebutton">
                 <Button className="savebuttonlink" color="info" onClick={save}>
                   <FontAwesomeIcon icon="save" />
