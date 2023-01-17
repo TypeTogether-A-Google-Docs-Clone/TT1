@@ -1,3 +1,4 @@
+import './document.scss';
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button, Table } from 'reactstrap';
@@ -32,10 +33,15 @@ export const Document = () => {
       <h2 id="document-heading" data-cy="DocumentHeading">
         Documents
         <div className="d-flex justify-content-end">
-          <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
+          <Button className="me-2 createnewdoc" color="info" onClick={handleSyncList} disabled={loading}>
             <FontAwesomeIcon icon="sync" spin={loading} /> Refresh list
           </Button>
-          <Link to="/document/new" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
+          <Link
+            to="/document/new"
+            className="btn btn-primary jh-create-entity createnewdoc"
+            id="jh-create-entity"
+            data-cy="entityCreateButton"
+          >
             <FontAwesomeIcon icon="plus" />
             &nbsp; Create a new Document
           </Link>
@@ -56,7 +62,8 @@ export const Document = () => {
               {documentList.map((document, i) => (
                 <tr key={`entity-${i}`} data-cy="entityTable">
                   <td>
-                    <Button tag={Link} to={`/document/${document.id}`} color="link" size="sm">
+                    {/*                     <Button className="viewdocanchorlink" tag={Link} to={`/document/${document.id}`} color="link" size="sm"> */}
+                    <Button className="viewdocanchorlink" tag={Link} to={`/document/${document.id}`} color="link" size="sm">
                       {document.documentTitle}
                     </Button>
                   </td>
@@ -68,10 +75,24 @@ export const Document = () => {
 
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
-                      <Button tag={Link} to={`/document/${document.id}`} color="info" size="sm" data-cy="entityDetailsButton">
+                      <Button
+                        className="createnewdoc"
+                        tag={Link}
+                        to={`/document/${document.id}`}
+                        color="info"
+                        size="sm"
+                        data-cy="entityDetailsButton"
+                      >
                         <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">View</span>
                       </Button>
-                      <Button tag={Link} to={`/document/${document.id}/edit`} color="primary" size="sm" data-cy="entityEditButton">
+                      <Button
+                        className="createnewdoc"
+                        tag={Link}
+                        to={`/document/${document.id}/edit`}
+                        color="primary"
+                        size="sm"
+                        data-cy="entityEditButton"
+                      >
                         <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
                       </Button>
                       <Button tag={Link} to={`/document/${document.id}/delete`} color="danger" size="sm" data-cy="entityDeleteButton">

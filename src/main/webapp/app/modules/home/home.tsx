@@ -129,7 +129,12 @@ export const Home = (props: any) => {
                 <Alert color="success">You are logged in as user &quot;{account.login}&quot;.</Alert>
               </div>
               <div className="buttonFun">
-                <Link to="/document" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
+                <Link
+                  to="/document"
+                  className="btn btn-primary jh-create-entity viewdoclink"
+                  id="jh-create-entity"
+                  data-cy="entityCreateButton"
+                >
                   <FontAwesomeIcon icon="plus" />
                   &nbsp; View Your Documents
                 </Link>
@@ -186,7 +191,7 @@ export const Home = (props: any) => {
                 }}
               />
               <div className="savebutton">
-                <Button color="info" onClick={save}>
+                <Button className="savebuttonlink" color="info" onClick={save}>
                   <FontAwesomeIcon icon="save" />
                   &nbsp; Save Document
                 </Button>
