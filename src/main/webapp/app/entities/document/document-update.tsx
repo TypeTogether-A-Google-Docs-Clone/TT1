@@ -128,7 +128,6 @@ export const DocumentUpdate = () => {
             <p>Loading...</p>
           ) : (
             <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}>
-              {!isNew ? <ValidatedField name="id" required readOnly id="document-id" label="ID" validate={{ required: true }} /> : null}
               <ValidatedField
                 label="Document Title"
                 id="document-documentTitle"
@@ -145,7 +144,10 @@ export const DocumentUpdate = () => {
                 onInit={(evt, editor) => (editorRef.current = editor)}
                 initialValue={documentEntity.documentContent}
                 init={{
-                  height: 500,
+                  skin: 'oxide-dark',
+                  content_css: 'dark',
+                  height: 1200,
+                  width: 1200,
                   menubar: true,
                   skin: 'fluent',
                   plugins: [
