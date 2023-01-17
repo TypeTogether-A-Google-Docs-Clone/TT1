@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Button, Row, Col } from 'reactstrap';
 import { TextFormat } from 'react-jhipster';
@@ -8,11 +8,15 @@ import { Editor } from '@tinymce/tinymce-react';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 import { getEntity } from './document.reducer';
+import axios from 'axios';
 
 export const DocumentDetail = () => {
   const dispatch = useAppDispatch();
 
   const { id } = useParams<'id'>();
+  const [saveStatus, setSaveStatus] = useState('');
+  const [readOnly, setReadOnly] = useState(false);
+  const account = useAppSelector(state => state.authentication.account);
 
   useEffect(() => {
     dispatch(getEntity(id));
@@ -25,6 +29,38 @@ export const DocumentDetail = () => {
     }
   };
 
+  const [dirty, setDirty] = useState(false);
+  useEffect(() => setDirty(false), ['']);
+  const save = async () => {
+    try {
+      if (editorRef.current) {
+        const content = editorRef.current.getContent();
+        setDirty(false);
+        editorRef.current.setDirty(false);
+        setSaveStatus('Saving...');
+        const response = await axios.post('/api/documents', {
+          documentTitle: 'Quick Document',
+          documentContent: content,
+          createdDate: new Date(),
+          modifiedDate: new Date(),
+          user: {
+            id: account.id,
+            login: account.login,
+          },
+        });
+        setSaveStatus('Saved');
+      }
+    } catch (error) {
+      console.log(error);
+      //handle error here
+    }
+  };
+  const handleEditorChange = (content, editor) => {
+    if (editorRef.current) {
+      setDirty(editorRef.current.isDirty());
+    }
+  };
+
   const documentEntity = useAppSelector(state => state.document.entity);
   return (
     <div>
@@ -32,10 +68,6 @@ export const DocumentDetail = () => {
         <Col md="8">
           <h2 data-cy="documentDetailsHeading">Document</h2>
           <dl className="jh-entity-details">
-            <dt>
-              <span id="id">ID</span>
-            </dt>
-            <dd>{documentEntity.id}</dd>
             <dt>
               <span id="documentTitle">Document Title</span>
             </dt>
@@ -48,8 +80,10 @@ export const DocumentDetail = () => {
                 apiKey="pc7rqzul9mdcfrch6wdkvminyzqgq5isq7dd7jj5pdikjwnb"
                 onInit={(evt, editor) => (editorRef.current = editor)}
                 initialValue={documentEntity.documentContent}
+                disabled={true}
                 init={{
-                  height: 500,
+                  height: 1000,
+                  width: 1000,
                   menubar: false,
                   plugins: [
                     'advlist',
@@ -79,8 +113,6 @@ export const DocumentDetail = () => {
                   content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
                 }}
               />
-              <button onClick={log}>Log editor content</button>
-              <textarea id="textarea">{documentEntity.documentContent}</textarea>
             </dd>
             {/*           <dd>{documentEntity.documentContent}</dd> */}
             <dt>
