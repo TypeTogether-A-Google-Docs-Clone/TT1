@@ -2,15 +2,12 @@
 // Import Bootstrap source files from node_modules
 @import '~bootstrap/scss/bootstrap';
 body {
-  // background: linear-gradient(to right, #00b09b, #96c93d);
-  //   background: #fafafa;
-  // background: -webkit-linear-gradient(left, #3931af, #00c6ff);
-  background: #00d1b2;
+  background: linear-gradient(to right, #00b4db, #0083b0);
   margin: 0;
 }
 
 a {
-  color: #533f03;
+  color: #fff;
   font-weight: bold;
 }
 
