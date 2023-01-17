@@ -12,7 +12,6 @@ import axios from 'axios';
 
 export const DocumentDetail = () => {
   const dispatch = useAppDispatch();
-
   const { id } = useParams<'id'>();
   const [saveStatus, setSaveStatus] = useState('');
   const [readOnly, setReadOnly] = useState(false);

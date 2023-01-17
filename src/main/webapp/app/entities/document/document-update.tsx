@@ -3,7 +3,6 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Button, Row, Col, FormText } from 'reactstrap';
 import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
@@ -12,6 +11,7 @@ import { IUser } from 'app/shared/model/user.model';
 import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { IDocument } from 'app/shared/model/document.model';
 import { getEntity, updateEntity, createEntity, reset } from './document.reducer';
+import axios from 'axios';
 
 export const DocumentUpdate = () => {
   const dispatch = useAppDispatch();
@@ -26,6 +26,10 @@ export const DocumentUpdate = () => {
   const loading = useAppSelector(state => state.document.loading);
   const updating = useAppSelector(state => state.document.updating);
   const updateSuccess = useAppSelector(state => state.document.updateSuccess);
+
+  const [saveStatus, setSaveStatus] = useState('');
+  const [readOnly, setReadOnly] = useState(false);
+  const account = useAppSelector(state => state.authentication.account);
 
   const handleClose = () => {
     navigate('/document');
@@ -67,6 +71,32 @@ export const DocumentUpdate = () => {
   const log = () => {
     if (editorRef.current) {
       console.log(editorRef.current.getContent());
+    }
+  };
+  const [dirty, setDirty] = useState(false);
+  useEffect(() => setDirty(false), ['']);
+  const save = async () => {
+    try {
+      if (editorRef.current) {
+        const content = editorRef.current.getContent();
+        setDirty(false);
+        editorRef.current.setDirty(false);
+        setSaveStatus('Saving...');
+        const response = await axios.post('/api/documents', {
+          documentTitle: 'Quick Document',
+          documentContent: content,
+          createdDate: new Date(),
+          modifiedDate: new Date(),
+          user: {
+            id: account.id,
+            login: account.login,
+          },
+        });
+        setSaveStatus('Saved');
+      }
+    } catch (error) {
+      console.log(error);
+      //handle error here
     }
   };
 
@@ -113,7 +143,7 @@ export const DocumentUpdate = () => {
                 id="editor"
                 apiKey="pc7rqzul9mdcfrch6wdkvminyzqgq5isq7dd7jj5pdikjwnb"
                 onInit={(evt, editor) => (editorRef.current = editor)}
-                initialValue="Hello World"
+                initialValue={documentEntity.documentContent}
                 init={{
                   height: 500,
                   menubar: true,
@@ -146,39 +176,13 @@ export const DocumentUpdate = () => {
                   content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
                 }}
               />
-              <ValidatedField
-                label="Created Date"
-                id="document-createdDate"
-                name="createdDate"
-                data-cy="createdDate"
-                type="datetime-local"
-                placeholder="YYYY-MM-DD HH:mm"
-              />
-              <ValidatedField
-                label="Modified Date"
-                id="document-modifiedDate"
-                name="modifiedDate"
-                data-cy="modifiedDate"
-                type="datetime-local"
-                placeholder="YYYY-MM-DD HH:mm"
-              />
-              <ValidatedField id="document-user" name="user" data-cy="user" label="User" type="select">
-                <option value="" key="0" />
-                {users
-                  ? users.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.login}
-                      </option>
-                    ))
-                  : null}
-              </ValidatedField>
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/document" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
                 <span className="d-none d-md-inline">Back</span>
               </Button>
               &nbsp;
-              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
+              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating} onClick={save}>
                 <FontAwesomeIcon icon="save" />
                 &nbsp; Save
               </Button>

@@ -171,12 +171,6 @@ export const Home = (props: any) => {
                   !loading && <div className="alert alert-warning">No Documents found</div>
                 )}
               </div>
-              <div className="savebutton">
-                <Button className="savebuttonlink" color="info" onClick={save}>
-                  <FontAwesomeIcon icon="save" />
-                  &nbsp; Save Document
-                </Button>
-              </div>
             </div>
           ) : (
             <div id="mybigblock" className="myblock">
