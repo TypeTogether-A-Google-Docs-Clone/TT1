@@ -76,7 +76,7 @@ export const Document = () => {
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
                       <Button
-                        className="createnewdoc"
+                        className="viewdoc"
                         tag={Link}
                         to={`/document/${document.id}`}
                         color="info"
