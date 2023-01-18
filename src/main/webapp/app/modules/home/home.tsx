@@ -118,6 +118,7 @@ export const Home = (props: any) => {
           {account?.login ? (
             <div className="Typetogether">
               <h2>Welcome to TypeTogether</h2>
+
               <div>
                 <Alert color="success">You are logged in as user &quot;{account.login}&quot;.</Alert>
               </div>
@@ -131,8 +132,19 @@ export const Home = (props: any) => {
                   <FontAwesomeIcon icon="plus" />
                   &nbsp; View Your Documents
                 </Link>
+                <Link
+                  to="/document/new"
+                  className="btn btn-primary jh-create-entity createnewdoc"
+                  id="jh-create-entity"
+                  data-cy="entityCreateButton"
+                >
+                  <FontAwesomeIcon icon="plus" />
+                  &nbsp; Create a new Document
+                </Link>
+
                 {dirty && <p>You have unsaved content!</p>}
               </div>
+              <h3>Recent Documents</h3>
               <div className="table-responsive">
                 {documentList && documentList.length > 0 ? (
                   <Table responsive className="table-striped">
