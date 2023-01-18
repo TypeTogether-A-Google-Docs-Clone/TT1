@@ -56,9 +56,9 @@ export const Document = () => {
           </a>
         </div>
       </h2>
-      <div className="table-responsive">
+      <div className="table-responsive ">
         {documentList && documentList.length > 0 ? (
-          <Table responsive>
+          <Table className="table-striped">
             <thead>
               <tr>
                 <th>Document Title</th>
