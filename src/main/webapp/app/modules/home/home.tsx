@@ -135,7 +135,7 @@ export const Home = (props: any) => {
               </div>
               <div className="table-responsive">
                 {documentList && documentList.length > 0 ? (
-                  <Table responsive>
+                  <Table responsive className="table-striped">
                     <thead>
                       <tr>
                         <th>Document Title</th>
