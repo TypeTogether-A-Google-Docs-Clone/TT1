@@ -56,9 +56,9 @@ export const Document = () => {
           </a>
         </div>
       </h2>
-      <div className="table-responsive">
+      <div className="table-responsive ">
         {documentList && documentList.length > 0 ? (
-          <Table responsive>
+          <Table className="table-striped">
             <thead>
               <tr>
                 <th>Document Title</th>
@@ -85,7 +85,7 @@ export const Document = () => {
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
                       <Button
-                        className="createnewdoc"
+                        className="viewdoc"
                         tag={Link}
                         to={`/document/${document.id}`}
                         color="info"
