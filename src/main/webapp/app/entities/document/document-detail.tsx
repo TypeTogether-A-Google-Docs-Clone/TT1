@@ -82,7 +82,7 @@ export const DocumentDetail = () => {
                 initialValue={documentEntity.documentContent}
                 disabled={true}
                 init={{
-                  height: 1000,
+                  height: 800,
                   width: 1000,
                   menubar: false,
                   plugins: [

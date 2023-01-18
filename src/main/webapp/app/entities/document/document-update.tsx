@@ -79,7 +79,7 @@ export const DocumentUpdate = () => {
     try {
       if (editorRef.current) {
         const content = editorRef.current.getContent();
-        const documentTitle = 'Zipcode Document';
+        const documentTitle = 'New Document';
         setDirty(false);
         editorRef.current.setDirty(false);
         setSaveStatus('Saving...');
@@ -145,8 +145,8 @@ export const DocumentUpdate = () => {
                 onInit={(evt, editor) => (editorRef.current = editor)}
                 initialValue={documentEntity.documentContent}
                 init={{
-                  height: 1200,
-                  width: 1200,
+                  height: 600,
+                  width: 1300,
                   menubar: true,
                   skin: 'fluent',
                   plugins: [
