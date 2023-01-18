@@ -45,6 +45,15 @@ export const Document = () => {
             <FontAwesomeIcon icon="plus" />
             &nbsp; Create a new Document
           </Link>
+          &nbsp;
+          <a
+            className="btn btn-primary jh-create-entity createnewdoc"
+            target="_blank"
+            href="https://typeittogether-colloborator.onrender.com/"
+          >
+            <FontAwesomeIcon icon="users" />
+            &nbsp;Colloborator Module
+          </a>
         </div>
       </h2>
       <div className="table-responsive">
