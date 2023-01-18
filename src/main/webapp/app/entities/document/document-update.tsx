@@ -26,7 +26,6 @@ export const DocumentUpdate = () => {
   const loading = useAppSelector(state => state.document.loading);
   const updating = useAppSelector(state => state.document.updating);
   const updateSuccess = useAppSelector(state => state.document.updateSuccess);
-
   const [saveStatus, setSaveStatus] = useState('');
   const [readOnly, setReadOnly] = useState(false);
   const account = useAppSelector(state => state.authentication.account);
@@ -116,10 +115,10 @@ export const DocumentUpdate = () => {
 
   return (
     <div>
-      <Row className="justify-content-center">
+      <Row>
         <Col md="8">
           <h2 id="typetogetherApp.document.home.createOrEditLabel" data-cy="DocumentCreateUpdateHeading">
-            Create or edit a Document
+            Document Editor
           </h2>
         </Col>
       </Row>
@@ -145,7 +144,7 @@ export const DocumentUpdate = () => {
                 onInit={(evt, editor) => (editorRef.current = editor)}
                 initialValue={documentEntity.documentContent}
                 init={{
-                  height: 600,
+                  height: 500,
                   width: 1300,
                   menubar: true,
                   skin: 'fluent',
