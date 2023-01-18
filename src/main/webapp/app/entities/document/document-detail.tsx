@@ -34,11 +34,12 @@ export const DocumentDetail = () => {
     try {
       if (editorRef.current) {
         const content = editorRef.current.getContent();
+        const documentTitle = 'Zipcode Document';
         setDirty(false);
         editorRef.current.setDirty(false);
         setSaveStatus('Saving...');
         const response = await axios.post('/api/documents', {
-          documentTitle: 'Quick Document',
+          documentTitle: documentTitle,
           documentContent: content,
           createdDate: new Date(),
           modifiedDate: new Date(),

@@ -79,11 +79,12 @@ export const DocumentUpdate = () => {
     try {
       if (editorRef.current) {
         const content = editorRef.current.getContent();
+        const documentTitle = 'Zipcode Document';
         setDirty(false);
         editorRef.current.setDirty(false);
         setSaveStatus('Saving...');
         const response = await axios.post('/api/documents', {
-          documentTitle: 'Quick Document',
+          documentTitle: documentTitle,
           documentContent: content,
           createdDate: new Date(),
           modifiedDate: new Date(),
@@ -122,7 +123,7 @@ export const DocumentUpdate = () => {
           </h2>
         </Col>
       </Row>
-      <Row className="justify-content-center">
+      <Row>
         <Col md="8">
           {loading ? (
             <p>Loading...</p>
