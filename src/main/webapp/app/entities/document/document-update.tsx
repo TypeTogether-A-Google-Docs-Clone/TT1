@@ -144,8 +144,6 @@ export const DocumentUpdate = () => {
                 onInit={(evt, editor) => (editorRef.current = editor)}
                 initialValue={documentEntity.documentContent}
                 init={{
-                  skin: 'oxide-dark',
-                  content_css: 'dark',
                   height: 1200,
                   width: 1200,
                   menubar: true,

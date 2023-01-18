@@ -3,10 +3,10 @@ Our Google Docs clone, called "TypeTogether" is a full stack web application tha
 
 ### Technologies:
 
-Frontend: React, HTML, CSS, Google API, JavaScript text editor
+Frontend: React, HTML, CSS, TinyMCE text editor
 
 Backend: Spring Boot, Java
-Database: MySQ
+Database: MySQL
 
 TypeTogether is a powerful and feature-rich web application, a scalable tool for teams and individuals looking to collaborate on documents.33 
 
