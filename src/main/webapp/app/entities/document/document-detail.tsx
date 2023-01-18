@@ -66,7 +66,7 @@ export const DocumentDetail = () => {
     <div>
       <Row>
         <Col md="8">
-          <h2 data-cy="documentDetailsHeading">Document</h2>
+          <h2 data-cy="documentDetailsHeading">Document Editor</h2>
           <dl className="jh-entity-details">
             <dt>
               <span id="documentTitle">Document Title</span>
@@ -82,8 +82,8 @@ export const DocumentDetail = () => {
                 initialValue={documentEntity.documentContent}
                 disabled={true}
                 init={{
-                  height: 800,
-                  width: 1000,
+                  height: 500,
+                  width: 1300,
                   menubar: false,
                   plugins: [
                     'advlist',
@@ -127,8 +127,6 @@ export const DocumentDetail = () => {
             <dd>
               {documentEntity.modifiedDate ? <TextFormat value={documentEntity.modifiedDate} type="date" format={APP_DATE_FORMAT} /> : null}
             </dd>
-            <dt>User</dt>
-            <dd>{documentEntity.user ? documentEntity.user.login : ''}</dd>
           </dl>
           <Button tag={Link} to="/document" replace color="info" data-cy="entityDetailsBackButton">
             <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>

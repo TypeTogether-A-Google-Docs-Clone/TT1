@@ -2,7 +2,8 @@
 // Import Bootstrap source files from node_modules
 @import '~bootstrap/scss/bootstrap';
 body {
-  background: white;
+  //background gradient light green to white
+  background: linear-gradient(to bottom, #e6ffe6, #ffffff);
   margin: 0;
 }
 
@@ -23,14 +24,17 @@ a {
 
 .app-container {
   box-sizing: border-box;
+
   .view-container {
     width: 100%;
     height: calc(100% - 40px);
     overflow-y: auto;
     overflow-x: hidden;
     padding: 1rem;
+    position: center;
     .card {
       background: transparent;
+
       padding: 1rem;
     }
     .view-routes {

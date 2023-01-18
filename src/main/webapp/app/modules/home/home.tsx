@@ -160,7 +160,7 @@ export const Home = (props: any) => {
                       {documentList.map((document, i) => (
                         <tr key={`entity-${i}`} data-cy="entityTable">
                           <td>
-                            <Button className="viewdocanchorlink" tag={Link} to={`/document/${document.id}`} color="link" size="lg">
+                            <Button className="viewdocanchorlink" tag={Link} to={`/document/${document.id}`} color="link" size="sm">
                               {document.documentTitle}
                             </Button>
                           </td>
