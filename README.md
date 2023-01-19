@@ -45,3 +45,7 @@ This will be a multi-user/single user dument creator.
 ![Untitled_Artwork 3](https://user-images.githubusercontent.com/115915843/211039392-61492a4d-a4ff-4d51-9627-6f09a419a54c.png)
 
 
+#TypeItTogether Collaborator Module
+
+https://user-images.githubusercontent.com/115901667/213333307-f720bd38-c76c-448d-8fbd-12b960af6ac2.mov
+
